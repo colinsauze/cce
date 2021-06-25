@@ -1,0 +1,3 @@
+[console_scripts]
+cce = cce.main:main
+

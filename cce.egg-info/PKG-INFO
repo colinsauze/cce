@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: cce
+Version: 0.1.0
+Summary: Extract code blocks from carpentries templates
+Home-page: UNKNOWN
+Author: Berend Weel
+Author-email: b.weel@esciencecenter.nl
+License: MIT
+Project-URL: Code, 
+Project-URL: Issues, 
+Project-URL: Funding, 
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

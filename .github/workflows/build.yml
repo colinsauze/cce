@@ -1,0 +1,35 @@
+name: Code Check
+on:
+  push:
+    branches:
+      - master
+  pull_request: []
+jobs:
+  code-check:
+    runs-on: ubuntu-20.04
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install Code Checker
+        run: |
+          python3 -m pip install --upgrade git+https://github.com/bpmweel/cce.git#egg=cce
+
+      - name: Checkout the lesson
+        uses: actions/checkout@v2
+
+      - name: Run code checkeer
+        run: |
+          FILES="tests/*"
+          for f in $FILES
+          do
+            echo "Checking $f"
+            cce -f "$f"
+          done

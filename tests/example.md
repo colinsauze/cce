@@ -19,9 +19,9 @@ something with output
 {: .output}
 dolor sit amet.
 ~~~
-import pytest_codeblocks
+import sys
 
-pytest_codeblocks.extract_from_buffer
+sys.version
 ~~~
 {:.language-python}
 Something that should be skipped because of the language:

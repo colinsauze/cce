@@ -108,11 +108,17 @@ def main():
     args = parser.parse_args()
 
     contents = extract_from_file(args.file)
-
+    errors = 0
     try:
         exec(contents)
     except Exception as e:
         print("Exception occurred while trying to run code: ", e)
+        print("Code: ")
+        print(contents)
+        errors = errors + 1
+
+    if errors > 0:
+        sys.exit(errors)
 
 
 if __name__ == "__main__":

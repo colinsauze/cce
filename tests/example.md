@@ -43,8 +43,7 @@ bar
 Something that contains triple fences
 ~~~
 # ~~~
-import math~~~
-{:.language-python}
+# import math~~~
 ~~~
 {:.language-python}
 

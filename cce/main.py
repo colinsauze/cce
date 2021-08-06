@@ -2,6 +2,7 @@ import argparse
 import contextlib
 import re
 import sys
+from contextlib import redirect_stdout
 # namedtuple with default arguments
 # <https://stackoverflow.com/a/18348004/353337>
 from dataclasses import dataclass
@@ -109,15 +110,18 @@ def main():
 
     contents = extract_from_file(args.file)
     errors = 0
-    try:
-        exec(contents)
-    except Exception as e:
-        print("Exception occurred while trying to run code: ", e)
-        print("Code: ")
-        print(contents)
-        errors = errors + 1
-
+    f = StringIO()
+    with redirect_stdout(f):
+        try:
+            exec(contents)
+        except Exception as e:
+            print("Exception occurred while trying to run code: ", e)
+            print("Code: ")
+            print(contents)
+            errors = errors + 1
+    s = f.getvalue()
     if errors > 0:
+        print(s)
         sys.exit(errors)
 
 

@@ -43,7 +43,7 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
             # EOF
             break
 
-        if line.lstrip()[:3] == "~~~":
+        if re.match("^[>\s]+[~]{3}", line.lstrip()):
             syntax = line.strip()[3:]
             num_leading_spaces = len(line) - len(line.lstrip())
             lineno = k - 1

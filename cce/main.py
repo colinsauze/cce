@@ -42,9 +42,9 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
         if not line:
             # EOF
             break
-
-        if re.match("^[>\s]+[~]{3}", line.lstrip()):
-            syntax = line.strip()[3:]
+        matches = re.match("^[>\s]+[~]{3}", line.lstrip())
+        if matches:
+            syntax = line.strip()[matches.span()[1]:]
             num_leading_spaces = len(line) - len(line.lstrip())
             lineno = k - 1
             # read the block
@@ -60,7 +60,7 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
                         f"File too large (> {max_num_lines} lines). Set max_num_lines."
                     )
                 # check if end of block
-                if line.lstrip()[:3] == "~~~":
+                if re.match("^[>\s]+[~]{3}", line.lstrip()):
                     break
                 # Cut (at most) num_leading_spaces leading spaces
                 nls = min(num_leading_spaces, len(line) - len(line.lstrip()))

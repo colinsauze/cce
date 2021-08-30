@@ -34,10 +34,16 @@ A shell script should be exectuted:
 echo abc
 ```
 Again with an explicit skip:
-<!--pytest-codeblocks:skip-->
+<!--cce:skip-->
 ~~~
 bar
 ~~~
+{:.language-python}
+
+> > <!--cce:skip-->
+> > ~~~
+> > bar
+> > ~~~
 {:.language-python}
 
 Something that contains triple fences

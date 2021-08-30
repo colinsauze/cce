@@ -43,11 +43,11 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
         if not line:
             # EOF
             break
-        matches = re.match("^([>\s]*|\s*)[~]{3}", line.lstrip())
+        matches = re.match("([>\s]*|\s*)[~]{3}", line.lstrip())
         if matches:
             # Indent can either be a number of spaces,
             # or a greater than follow by a space a number of times
-            leading_indent = re.match("^([>\s]*|\s*)", line)
+            leading_indent = re.match("([>\s]*|\s*)", line)
             lineno = k - 1
             # read the block
             code_block = []
@@ -62,7 +62,7 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
                         f"File too large (> {max_num_lines} lines). Set max_num_lines."
                     )
                 # check if end of block
-                if re.match("^([>\s]*|\s*)[~]{3}", line.lstrip()):
+                if re.match("([>\s]*|\s*)[~]{3}", line.lstrip()):
                     break
                 # Cut leading indents
                 line = line[leading_indent.span()[1]:]
@@ -80,8 +80,7 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
                     continue
 
                 # check for keywords
-                m = re.match("<!--pytest-codeblocks:(.*)-->",
-                             previous_line.strip())
+                m = re.search("<!--cce:(.*)-->", previous_line.strip())
                 if m is None:
                     out += "".join(code_block)
                     continue

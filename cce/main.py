@@ -1,8 +1,8 @@
 import argparse
 import contextlib
+import logging
 import re
 import sys
-import logging
 from contextlib import redirect_stdout
 # namedtuple with default arguments
 # <https://stackoverflow.com/a/18348004/353337>
@@ -43,11 +43,11 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
         if not line:
             # EOF
             break
-        matches = re.match("^[>\s]*[~]{3}", line.lstrip())
+        matches = re.match("^([>\s]*|\s*)[~]{3}", line.lstrip())
         if matches:
-            syntax = line.strip()[matches.span()[1]:]
-            num_leading_spaces = len(line) - len(line.lstrip())
-            leading_indent = re.match("^[>\s]*", line.lstrip())
+            # Indent can either be a number of spaces,
+            # or a greater than follow by a space a number of times
+            leading_indent = re.match("^([>\s]*|\s*)", line)
             lineno = k - 1
             # read the block
             code_block = []
@@ -62,7 +62,7 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
                         f"File too large (> {max_num_lines} lines). Set max_num_lines."
                     )
                 # check if end of block
-                if re.match("^[>\s]*[~]{3}", line.lstrip()):
+                if re.match("^([>\s]*|\s*)[~]{3}", line.lstrip()):
                     break
                 # Cut leading indents
                 line = line[leading_indent.span()[1]:]
@@ -71,7 +71,8 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
             line = f.readline()
             if not line:
                 raise RuntimeError(
-                    "Hit end-of-file prematurely. Syntax error?")
+                    f"Hit end-of-file prematurely at line: {lineno}. Syntax error?"
+                )
 
             if re.match("[>\s]*\{:\s*\.language-python\}", line.lstrip()):
                 if previous_line is None:
@@ -95,7 +96,6 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
                         'Unknown pytest-codeblocks keyword "{keyword}."')
 
         previous_line = line
-
     return out
 
 
@@ -109,8 +109,7 @@ def main():
     parser.add_argument('-o',
                         '--output_code',
                         help='Whether to write the code content to stdout',
-                        action='store_true'
-                        )
+                        action='store_true')
     args = parser.parse_args()
 
     contents = extract_from_file(args.file)

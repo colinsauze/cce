@@ -48,9 +48,19 @@ Something that contains triple fences
 {:.language-python}
 
 Indented code blocks:
-  ~~~
-  1 + 1 == 2
-  ~~~
+> > ~~~
+> > 1 + 1 == 2
+> > ~~~
+{:.language-python}
+
+   ~~~
+   5 + 6 == 11
+   ~~~
+{:.language-python}
+
+ > > ~~~
+ > > 7 + 8 == 15
+ > > ~~~
 {:.language-python}
 
 "Wrong" indentation:

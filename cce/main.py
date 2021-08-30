@@ -105,7 +105,11 @@ def main():
                         '--file',
                         help='The file to extract from',
                         required=True)
-
+    parser.add_argument('-o',
+                        '--output_code',
+                        help='Whether to write the code content to stdout',
+                        action='store_true'
+                        )
     args = parser.parse_args()
 
     contents = extract_from_file(args.file)
@@ -123,6 +127,8 @@ def main():
     if errors > 0:
         print(s)
         sys.exit(errors)
+    elif args.output_code:
+        print(contents)
 
 
 if __name__ == "__main__":

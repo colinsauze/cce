@@ -98,41 +98,36 @@ def extract_from_buffer(f, max_num_lines: int = 10000):
     return out
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='Extract code  blocks from carpentries markdown.')
-    parser.add_argument('-f',
-                        '--file',
-                        help='The file to extract from',
-                        required=True)
-    parser.add_argument('-o',
-                        '--output_code',
-                        help='Whether to write the code content to stdout',
-                        action='store_true')
-    args = parser.parse_args()
+parser = argparse.ArgumentParser(
+    description='Extract code  blocks from carpentries markdown.')
+parser.add_argument('-f',
+                    '--file',
+                    help='The file to extract from',
+                    required=True)
+parser.add_argument('-o',
+                    '--output_code',
+                    help='Whether to write the code content to stdout',
+                    action='store_true')
+args = parser.parse_args()
 
-    contents = extract_from_file(args.file)
-    if args.output_code:
-        print(contents)
+contents = extract_from_file(args.file)
+if args.output_code:
+    print(contents)
 
-    errors = 0
-    f = StringIO()
-    with redirect_stdout(f):
-        try:
-            exec(contents)
-        except Exception as e:
-            logging.error("Exception occurred while trying to run code:")
-            logging.error(e, exc_info=True)
-            logging.error("Code: ")
-            logging.error(contents)
-            errors = errors + 1
-    s = f.getvalue()
-    if errors > 0:
-        logging.error(s)
-        sys.exit(errors)
-    elif args.output_code:
-        print(contents)
-
-
-if __name__ == "__main__":
-    main()
+errors = 0
+f = StringIO()
+with redirect_stdout(f):
+    try:
+        exec(contents)
+    except Exception as e:
+        logging.error("Exception occurred while trying to run code:")
+        logging.error(e, exc_info=True)
+        logging.error("Code: ")
+        logging.error(contents)
+        errors = errors + 1
+s = f.getvalue()
+if errors > 0:
+    logging.error(s)
+    sys.exit(errors)
+elif args.output_code:
+    print(contents)
